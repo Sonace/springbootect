@@ -27,7 +27,7 @@ public class test {
 	@Autowired
 	private RoleService roleService;
 
-	@RequestMapping("/henho")
+	@GetMapping(value = {"/","/henho"})
 	public String index() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Set<String> roles = authentication.getAuthorities().stream().map(r -> r.getAuthority())
