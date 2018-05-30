@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head>
+<head th:include="include/banner :: banner">
 <meta charset="UTF-8" />
 <title>Index Page</title>
 
@@ -12,5 +12,6 @@
     <form action="#" th:action="@{/logout}" method="POST">
         <button type="submit">Logout</button>
     </form>
+    <div  th:replace="include/footer :: footer"> </div>
 </body>
 </html>
