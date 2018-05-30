@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.SpringBootect.son.mapper.RoleMapper">
+  
+     
+    
+     
+    <select id="getRoleNames" parameterType="int" resultType="java.lang.String">
+   				 Select r.Role_Name from user_role ur, role r
+                where ur.role_id = r.role_id and ur.user_id = #{userId};
+    </select>
+     
+   
+</mapper>

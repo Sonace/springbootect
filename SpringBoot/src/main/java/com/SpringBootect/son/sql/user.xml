@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.SpringBootect.son.mapper.UserMapper">
+  
+     
+    <select id="selectAllUser" resultMap="result">
+        SELECT * FROM _user;
+    </select>
+     
+    <select id="findUserAccount" parameterType="String" resultMap="result">
+        SELECT user_id,user_name,pass_word FROM _user WHERE user_name = #{userName};
+    </select>
+     
+    <resultMap id = "result" type = "User">
+       <result property = "user_id" column = "user_id"/>
+       <result property = "user_name" column = "user_name"/>
+       <result property = "pass_word" column = "pass_word"/>
+  		<result property = "bod" column = "bod"/>
+    </resultMap>
+</mapper>
