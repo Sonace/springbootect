@@ -13,10 +13,15 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.SpringBootect.son.model.Address;
+import com.SpringBootect.son.model.User;
+import com.SpringBootect.son.service.AddressService;
 import com.SpringBootect.son.service.RoleService;
 import com.SpringBootect.son.service.UserService;
+
 
 @Controller
 public class test {
@@ -26,6 +31,9 @@ public class test {
 
 	@Autowired
 	private RoleService roleService;
+	
+	@Autowired
+	private AddressService addressService;
 
 	@GetMapping(value = {"/","/henho"})
 	public String index() {
@@ -50,13 +58,33 @@ public class test {
 	}
 
 	@GetMapping("/login")
-	public String getLogin(Model model) {
-
-		model.addAttribute("hoho", userRepository.findUserAccount("son@gmail.com"));
-		System.out.println(userRepository.findUserAccount("son@gmail.com"));
-		System.out.println(roleService.getRoleNames(1));
+	public String getLogin() {
 		return "login";
 	}
+	
+	
+	
+	@RequestMapping("/register")
+	public String register() {
+		
+		return "register";
+	}
+	
+	@RequestMapping("/registerProccessing")
+	public String registerProccessing( @ModelAttribute(value = "user" ) User user  ) {
+		System.out.println("vl"+user);
+		
+		userRepository.insertUser(user);
+		
+		Address a= new Address();
+		a.setUser_id(user.getAddress().getUser_id());
+		a.setEmail(user.getAddress().getEmail());
+		a.setFax(user.getAddress().getFax());
+		a.setPhone_number(user.getAddress().getPhone_number());
+		addressService.insertAddress(a);
+		return "/login";
+	}
+	
 	
 	
 	@GetMapping("/logout")

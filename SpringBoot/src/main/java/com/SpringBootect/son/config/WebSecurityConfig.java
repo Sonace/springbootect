@@ -33,8 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    protected void configure(HttpSecurity http) throws Exception {
 	        http
 	            .authorizeRequests()
-	                .antMatchers("/login", "/logout").permitAll()
-	                .antMatchers("/**").authenticated()
+	                .antMatchers("/login", "/logout","/register").permitAll()
+	                .antMatchers("/").authenticated()
 	                .antMatchers("/henho").hasRole("ADMIN")
 	                .and()
 	            .formLogin()
@@ -45,6 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	                .failureUrl("/login?error")
 	                .and()
 	            .exceptionHandling()
-	                .accessDeniedPage("/403");
+	                .accessDeniedPage("/403").and()
+					.rememberMe()
+					.key("uniqueAndSecret")
+					.rememberMeCookieName("daxua20gg")
+					.tokenValiditySeconds(24 * 60 * 60);
 	    }
 	}

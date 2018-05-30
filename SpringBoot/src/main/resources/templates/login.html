@@ -7,16 +7,19 @@
 <body>
 
 	<h1>Welcome to Viet Nam </h1>
-	<h1 th:text="${hoho}"/>
+	
     <div class="main-content">
         <p th:if="${param.error}" class="error">Invalid email or password</p>
         <p th:if="${param.logout}" class="success">You have been logged out</p>
         <h3>Login to continue</h3>
         <form th:action="@{/login}" method="POST">
-            <input type="text" name="email"  /><br />
-            <input type="password" name="password"  /><br />
+            Emai:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email"  /><br />
+            Password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password"  /><br />
+            Remember Me: <input type="checkbox" name="remember-me" />
             <button type="submit">Login</button> <br />
+       
         </form>
+       <a th:href="@{/register}"><button>Register</button></a>
     </div>
 </body>
 </html>

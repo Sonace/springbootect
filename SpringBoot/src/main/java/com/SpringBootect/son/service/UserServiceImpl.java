@@ -34,6 +34,22 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	@Override
+	public int insertUser(User user) {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			int insert = session.insert("insertUser", user);
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return 0;
+		}
+		
+		
+		
+		
+	}
+
 	public static void main(String[] args) {
 
 		// insert student

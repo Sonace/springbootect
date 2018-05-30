@@ -11,6 +11,10 @@
     <select id="findUserAccount" parameterType="String" resultMap="result">
         SELECT user_id,user_name,pass_word FROM _user WHERE user_name = #{userName};
     </select>
+    
+     <insert id="insertUser" parameterType="User" >
+        INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, #{pass_word}, #{bod}});
+    </insert>
      
     <resultMap id = "result" type = "User">
        <result property = "user_id" column = "user_id"/>

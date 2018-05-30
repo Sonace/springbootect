@@ -6,11 +6,13 @@
     <typeAliases>
         <typeAlias alias="User" type="com.SpringBootect.son.model.User" />
         <typeAlias alias="Role" type="com.SpringBootect.son.model.Role" />
+        <typeAlias alias="Address" type="com.SpringBootect.son.model.Address" />
     </typeAliases>
 
     <mappers>
         <mapper resource="com/SpringBootect/son/sql/role.xml" />
         <mapper resource="com/SpringBootect/son/sql/user.xml" />
+        <mapper resource="com/SpringBootect/son/sql/address.xml" />
     </mappers>
 
 </configuration>
