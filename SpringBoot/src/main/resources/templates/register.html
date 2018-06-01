@@ -20,8 +20,9 @@
             	var regularExpression =new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$");
             	var reg1= /^[0-9\s- \+]{8,13}$/;
             	 if (username == ''){
+            		 submit=false;
             	        alert('Bạn chưa nhập tên đăng nhập');
-            	        submit=false;
+            	       
             	    }
             	 if (!regularExpression.test(password) ){
          	        alert('Bạn chưa nhập password');
@@ -43,7 +44,7 @@
          	        alert('Bạn chưa nhập fax');
          	        submit=false;
          	    }
-            	if(submit=true) {
+            	if(submit==true) {
             		
             		return true;
             	}else{
