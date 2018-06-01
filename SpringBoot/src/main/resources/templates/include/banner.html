@@ -1,0 +1,7 @@
+<div th:fragment="banner">
+	<div style="display: inline-block;"></div>
+		<span sec:authentication="name"></span>
+	<form action="#" th:action="@{/logout}" method="POST">
+		<button type="submit">Logout</button>
+	</form>
+</div>

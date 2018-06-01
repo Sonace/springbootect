@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Register Page</title>
+
+
+		<script language="javascript">
+            function valid()
+            {
+            	var submit=true;
+            	
+            	var username = document.getElementById('username').value;
+            	var password = document.getElementById('password').value;
+            	var date = document.getElementById('date').value;
+            	var email = document.getElementById('email').value;
+            	var phone = document.getElementById('phone').value;
+            	var fax = document.getElementById('fax').value;
+            	
+            	var regularExpression =new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$");
+            	var reg1= /^[0-9\s- \+]{8,13}$/;
+            	 if (username == ''){
+            	        alert('Bạn chưa nhập tên đăng nhập');
+            	        submit=false;
+            	    }
+            	 if (!regularExpression.test(password) ){
+         	        alert('Bạn chưa nhập password');
+         	        submit=false;
+         	    }
+            	 if (date == ''){
+         	        alert('Bạn chưa nhập date of birth day');
+         	        submit=false;
+         	    }
+            	 if (email == ''){
+         	        alert('Bạn chưa nhập email');
+         	        submit=false;
+         	    }
+            	 if (!reg1.test(phone)){
+         	        alert('Bạn chưa nhập phone Number');
+         	        submit=false;
+         	    }
+            	 if (!reg1.test(fax)){
+         	        alert('Bạn chưa nhập fax');
+         	        submit=false;
+         	    }
+            	if(submit=true) {
+            		
+            		return true;
+            	}else{
+            		
+            		return false;
+            	}
+                
+            }
+        </script>
+</head>
+<body>
+	<h1>Input information</h1>
+
+
+	<form action="#" th:action="@{/registerProccessing}" th:object="${User}" method="POST"   onsubmit="return(valid());">
+
+			<input type="text" th:field="*{user_id}" hidden />
+		
+		Username:<input type="text" id="username" th:field="*{user_name}" /><br /> 
+		Password:<input type="password" id="password" th:field="*{pass_word}" /><br /> 
+		Date of birth:<input type="date" id="date" th:field="*{bod}"  /><br />
+		 Email:<input type="email" id="email" th:field="*{address.email}" /><br /> 
+		 Phone number:<input type="number" id="phone" th:field="*{address.phone_number}"  /><br /> 
+		 Fax:         <input type="number" id="fax" th:field="*{address.fax}" /><br />
+		<button type="submit">Register</button>
+		<button type="reset">clear</button>
+		<br />
+	</form>
+
+</body>
+</html>

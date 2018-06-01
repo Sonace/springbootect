@@ -13,7 +13,7 @@
     </select>
     
      <insert id="insertUser" parameterType="User" >
-        INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, #{pass_word}, #{bod}});
+        INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, #{pass_word}, #{bod});
     </insert>
      
     <resultMap id = "result" type = "User">
