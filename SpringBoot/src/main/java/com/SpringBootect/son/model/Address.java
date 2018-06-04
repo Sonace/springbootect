@@ -23,13 +23,15 @@ public class Address {
 	private int user_id;
 
 	@NotNull
-	@Pattern(regexp = "^[0-9\\s- \\+]{8,13}$")
-	private String phone_number;
+//	@Pattern(regexp = "^[0-9\\s- \\+]{8,13}$")
+
+	private int phone_number;
 	
 	@Email
 	private String email;
 	
 	@NotNull
-	@Pattern(regexp = "^[0-9\\s- \\+]{8,13}$")
-	private String fax;
+//	@Pattern(regexp = "^[0-9\\s- \\+]{8,13}$")
+
+	private int fax;
 }

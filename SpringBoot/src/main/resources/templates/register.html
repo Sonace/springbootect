@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <title>Register Page</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 
-
-		<script language="javascript">
+		<script language="javascript"  th:inline="javascript">
+			var ckuser=true;
             function valid()
             {
             	var submit=true;
@@ -44,6 +45,10 @@
          	        alert('Bạn chưa nhập fax');
          	        submit=false;
          	    }
+            	  if(ckuser==false){
+            		 submit=false;
+            		 
+            	 } 
             	if(submit==true) {
             		
             		return true;
@@ -52,6 +57,32 @@
             		return false;
             	}
                 
+            }
+            
+            
+            
+            function nameCheckFunction(){
+      			  /*
+            	    x.value = x.value.toUpperCase(); */
+            	    
+            	    var l=[[${lUser}]];
+            	    var x = document.getElementById("username").value;
+            	    
+            	    for (i = 0; i < l.length; i++) {
+            	    	if (l[i].user_name == x) {
+            	    		 alert('tên đăng nhập: ' + l[i].user_name+ 'đã được sử dụng') ;
+            	    		 ckuser=false;
+            	    		 $("#username").css("border", "2px solid red");
+            	    		 break;
+            	    	}else{
+            	    		$("#username").css("border", "2px solid green");
+            	    		ckuser=true;
+            	    		
+            	    	}
+            	    }
+            	    
+            	   
+            	    
             }
         </script>
 </head>
@@ -63,7 +94,7 @@
 
 			<input type="text" th:field="*{user_id}" hidden />
 		
-		Username:<input type="text" id="username" th:field="*{user_name}" /><br /> 
+		Username:<input type="text" id="username" th:field="*{user_name}" onfocusout="nameCheckFunction()" /><br /> 
 		Password:<input type="password" id="password" th:field="*{pass_word}" /><br /> 
 		Date of birth:<input type="date" id="date" th:field="*{bod}"  /><br />
 		 Email:<input type="email" id="email" th:field="*{address.email}" /><br /> 

@@ -12,14 +12,31 @@
         SELECT user_id,user_name,pass_word FROM _user WHERE user_name = #{userName};
     </select>
     
-     <insert id="insertUser" parameterType="User" >
-        INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, #{pass_word}, #{bod});
-    </insert>
+     <select id="insertUser" parameterType="User" >
+        <!-- INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, #{pass_word}, #{bod}); -->
+        
+        {call insertInfor(
+        #{user_name, mode=IN, jdbcType=VARCHAR},
+        #{pass_word, mode=IN, jdbcType=CHAR},
+        #{bod, mode=IN, jdbcType=DATE},
+        #{address.phone_number, mode=IN, jdbcType=INTEGER},
+        #{address.email, mode=IN, jdbcType=CHAR},
+        #{address.fax, mode=IN, jdbcType=INTEGER}
+		)} 
+        
+    </select>
      
     <resultMap id = "result" type = "User">
        <result property = "user_id" column = "user_id"/>
        <result property = "user_name" column = "user_name"/>
        <result property = "pass_word" column = "pass_word"/>
   		<result property = "bod" column = "bod"/>
+    </resultMap>
+    
+     <resultMap id = "addressType" type = "Address">
+       <result property = "user_id" column = "user_id"/>
+       <result property = "phone_number" column = "phone_number"/>
+       <result property = "email" column = "email"/>
+  		<result property = "fax" column = "fax"/>
     </resultMap>
 </mapper>

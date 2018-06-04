@@ -1,5 +1,7 @@
 package com.SpringBootect.son.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,8 @@ public class test {
 	@Autowired
 	private JavaMailSender emailSender;
 
+	private List<User> lu;
+
 	@GetMapping(value = { "/", "/henho" })
 	public String index() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -74,7 +78,11 @@ public class test {
 	@RequestMapping("/register")
 	public String register(Model model) {
 		User u = new User();
+		List<User> lu= new ArrayList<User>();
+		lu = userRepository.selectAllUser();
 		model.addAttribute("User", u);
+		model.addAttribute("lUser", lu);
+		
 		return "register";
 	}
 
@@ -92,13 +100,8 @@ public class test {
 		int insertUser = userRepository.insertUser(user);
 		System.out.println(insertUser);
 		if (insertUser == 1) {
-			Address a = new Address();
-			a.setUser_id(user.getAddress().getUser_id());
-			a.setEmail(user.getAddress().getEmail());
-			a.setFax(user.getAddress().getFax());
-			a.setPhone_number(user.getAddress().getPhone_number());
-			addressService.insertAddress(a);
-			System.out.println("ok");
+			
+			
 
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -116,7 +119,7 @@ public class test {
 
 			return "/login";
 		} else {
-			System.out.println("xit");
+			
 			return "/login";
 		}
 
