@@ -41,7 +41,7 @@ public class User implements Serializable {
 
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date bod;
+	private String bod;
 	
 	@Valid
 	private Account account;

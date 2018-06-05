@@ -1,42 +1,61 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- 
+
 <mapper namespace="com.SpringBootect.son.mapper.UserMapper">
-  
-     
-    <select id="selectAllUser" resultMap="result">
-        SELECT * FROM _user;
-    </select>
-     
-    <select id="findUserAccount" parameterType="String" resultMap="result">
-        SELECT user_id,user_name,pass_word FROM _user WHERE user_name = #{userName};
-    </select>
-    
-     <select id="insertUser" parameterType="User" >
-        <!-- INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, #{pass_word}, #{bod}); -->
-        
-        {call insertInfor(
-        #{user_name, mode=IN, jdbcType=VARCHAR},
-        #{pass_word, mode=IN, jdbcType=CHAR},
-        #{bod, mode=IN, jdbcType=DATE},
-        #{address.phone_number, mode=IN, jdbcType=INTEGER},
-        #{address.email, mode=IN, jdbcType=CHAR},
-        #{address.fax, mode=IN, jdbcType=INTEGER}
-		)} 
-        
-    </select>
-     
-    <resultMap id = "result" type = "User">
-       <result property = "user_id" column = "user_id"/>
-       <result property = "user_name" column = "user_name"/>
-       <result property = "pass_word" column = "pass_word"/>
-  		<result property = "bod" column = "bod"/>
-    </resultMap>
-    
-     <resultMap id = "addressType" type = "Address">
-       <result property = "user_id" column = "user_id"/>
-       <result property = "phone_number" column = "phone_number"/>
-       <result property = "email" column = "email"/>
-  		<result property = "fax" column = "fax"/>
-    </resultMap>
+
+
+	<select id="selectAllUser" resultMap="result">
+		SELECT * FROM _user;
+	</select>
+
+	<select id="findUserAccount" parameterType="String"
+		resultMap="result">
+		SELECT user_id,user_name,pass_word FROM _user WHERE user_name = #{userName};
+	</select>
+
+	<select id="insertUser" parameterType="User">
+		<!-- INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, 
+			#{pass_word}, #{bod}); -->
+
+		{call insertInfor(
+		#{user_name, mode=IN, jdbcType=VARCHAR},
+		#{pass_word, mode=IN, jdbcType=CHAR},
+		#{bod, mode=IN, jdbcType=DATE},
+		#{address.phone_number, mode=IN, jdbcType=INTEGER},
+		#{address.email, mode=IN, jdbcType=CHAR},
+		#{address.fax, mode=IN, jdbcType=INTEGER}
+		)}
+
+	</select>
+
+
+	<select id="getdata" resultMap="result">
+		SELECT * FROM _user
+		LEFT JOIN address ON _user.user_id=address.user_id
+		LEFT JOIN account ON _user.user_id=account.user_id
+		ORDER BY _user.user_id
+		;
+	</select>
+
+	<resultMap id="result" type="User">
+		<result property="user_id" column="user_id" />
+		<result property="user_name" column="user_name" />
+		<result property="pass_word" column="pass_word" />
+		<result property="bod" column="bod" />
+		<association property="address" resultMap="addressType" />
+		<association property="account" resultMap="accountType" />
+	</resultMap>
+
+	<resultMap id="addressType" type="Address">
+		<result property="user_id" column="user_id" />
+		<result property="phone_number" column="phone_number" />
+		<result property="email" column="email" />
+		<result property="fax" column="fax" />
+	</resultMap>
+
+	<resultMap id="accountType" type="Account">
+		<result property="account_id" column="account_id" />
+		<result property="amount" column="amount" />
+		<result property="user_id" column="user_id" />
+	</resultMap>
 </mapper>

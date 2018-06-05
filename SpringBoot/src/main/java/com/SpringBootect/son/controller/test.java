@@ -1,6 +1,11 @@
 package com.SpringBootect.son.controller;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.ibatis.javassist.bytecode.analysis.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -49,7 +55,7 @@ public class test {
 	private List<User> lu;
 
 	@GetMapping(value = { "/", "/henho" })
-	public String index() {
+	public String index(Model model) throws ParseException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Set<String> roles = authentication.getAuthorities().stream().map(r -> r.getAuthority())
 				.collect(Collectors.toSet());
@@ -57,6 +63,22 @@ public class test {
 
 		String role = (rolo[0]);
 		System.out.println(role + " da dang nhap");
+		
+
+		List<User> getdata = userRepository.getdata();
+	
+		SimpleDateFormat from = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat to = new SimpleDateFormat("dd-MM-yyyy");
+		for (int i = 0; i < getdata.size(); i++) {
+			
+//			String format = formatter.format(getdata.get(i).getBod());
+			String reformattedStr = to.format(from.parse(getdata.get(i).getBod()));
+		
+			getdata.get(i).setBod(reformattedStr); 
+		
+		}
+			
+		model.addAttribute("userData", getdata);
 		return "welcome";
 	}
 
@@ -80,9 +102,10 @@ public class test {
 		User u = new User();
 		List<User> lu= new ArrayList<User>();
 		lu = userRepository.selectAllUser();
+		
+		
 		model.addAttribute("User", u);
 		model.addAttribute("lUser", lu);
-		
 		return "register";
 	}
 

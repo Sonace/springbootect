@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 public class Account {
 	private int account_id;
-	private float amount;
+	private double amount;
 	private int user_id;
 	
 	

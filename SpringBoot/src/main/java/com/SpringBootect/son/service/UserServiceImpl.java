@@ -67,6 +67,14 @@ public class UserServiceImpl implements UserService {
 		
 		
 	}
+	
+	
+	@Override
+	public List<User> getdata() {
+		SqlSession session = sqlSessionFactory.openSession();
+		List<User> selectList = session.selectList("getdata");
+		return selectList;
+	}
 
 	public static void main(String[] args) {
 
@@ -79,7 +87,7 @@ public class UserServiceImpl implements UserService {
 		User u= new User();
 		u.setUser_name("qweqwe");
 		u.setPass_word("asdasdasd");
-		u.setBod(new java.util.Date());
+		u.setBod("2018-12-12");
 		u.setAddress(a);
 		
 		
@@ -91,5 +99,8 @@ public class UserServiceImpl implements UserService {
 		
 		System.out.println("asdasdas"+new UserServiceImpl().insertUser(u));
 	}
+
+
+	
 
 }
