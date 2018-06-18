@@ -10,11 +10,12 @@
 
 	<select id="findUserAccount" parameterType="String"
 		resultMap="result">
-		SELECT user_id,user_name,pass_word FROM _user WHERE user_name = #{userName};
+		SELECT user_id,user_name,pass_word FROM _user WHERE
+		user_name = #{userName};
 	</select>
 
 	<select id="insertUser" parameterType="User">
-		<!-- INSERT INTO _user (user_name, pass_word, bod) VALUES (#{user_name}, 
+		<!-- INSERT INTO _user (user_name, pass_word, bod) sortS (#{user_name}, 
 			#{pass_word}, #{bod}); -->
 
 		{call insertInfor(
@@ -22,18 +23,54 @@
 		#{pass_word, mode=IN, jdbcType=CHAR},
 		#{bod, mode=IN, jdbcType=DATE},
 		#{address.phone_number, mode=IN, jdbcType=INTEGER},
-		#{address.email, mode=IN, jdbcType=CHAR},
+		#{address.email,
+		mode=IN, jdbcType=CHAR},
 		#{address.fax, mode=IN, jdbcType=INTEGER}
 		)}
 
 	</select>
 
 
-	<select id="getdata" resultMap="result">
+	<select id="getdata" parameterType="Order" resultMap="result">
 		SELECT * FROM _user
 		LEFT JOIN address ON _user.user_id=address.user_id
 		LEFT JOIN account ON _user.user_id=account.user_id
-		ORDER BY _user.user_id
+
+		<if test="orderr == ''">
+			ORDER BY _user.user_id 
+		</if>
+		<if test="orderr == 'userName'">
+			ORDER BY _user.user_name ASC
+		</if>
+		
+		<if test="orderr == 'userNameDesc'">
+			ORDER BY _user.user_name DESC
+		</if>
+		<if test="orderr == 'email'">
+			ORDER BY address.email ASC
+		</if>
+		<if test="orderr == 'emailDesc'">
+			ORDER BY address.email DESC
+		</if>
+		<if test="orderr == 'phone'">
+			ORDER BY address.phone_number ASC
+		</if>
+		<if test="orderr == 'phoneDesc'">
+			ORDER BY address.phone_number DESC
+		</if>
+		<if test="orderr == 'dob'">
+			ORDER BY _user.bod ASC
+		</if>
+		<if test="orderr == 'dobDesc'">
+			ORDER BY _user.bod DESC
+		</if>
+		<if test="orderr == 'amount'">
+			ORDER BY account.amount ASC
+		</if>
+		<if test="orderr == 'amountDesc'">
+			ORDER BY account.amount DESC
+		</if>
+
 		;
 	</select>
 
@@ -43,7 +80,7 @@
 		<result property="pass_word" column="pass_word" />
 		<result property="bod" column="bod" />
 		<association property="address" resultMap="addressType" />
-		<association property="account" resultMap="accountType" />
+		<association property="account" resultMap="accountType" />	
 	</resultMap>
 
 	<resultMap id="addressType" type="Address">

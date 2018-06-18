@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.SpringBootect.son.config.AppConfig;
 import com.SpringBootect.son.model.Address;
+import com.SpringBootect.son.model.Order;
 import com.SpringBootect.son.model.User;
 
 @Service(value = "userService")
@@ -70,10 +71,19 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public List<User> getdata() {
-		SqlSession session = sqlSessionFactory.openSession();
-		List<User> selectList = session.selectList("getdata");
-		return selectList;
+	public List<User> getdata(String sort) {
+		SqlSession session = sqlSessionFactory.openSession();try {
+			Order o= new Order(sort,"");
+		
+			List<User> selectList = session.selectList("getdata",o);
+			return selectList;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+		
+		
 	}
 
 	public static void main(String[] args) {
@@ -97,7 +107,9 @@ public class UserServiceImpl implements UserService {
 //		System.out.println("insert : " + new UserServiceImpl().findUserAccount("son@gmail.com"));
 		
 		
-		System.out.println("asdasdas"+new UserServiceImpl().insertUser(u));
+//		System.out.println("asdasdas"+new UserServiceImpl().insertUser(u));
+	
+		System.out.println("asdasdas"+new UserServiceImpl().getdata("userNameDesc"));
 	}
 
 

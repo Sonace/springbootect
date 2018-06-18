@@ -92,12 +92,20 @@
 			<version>4.1.0.Final</version>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
 			<version>1.0.2</version>
 		</dependency>
+
+
+		<dependency>
+			<groupId>org.mybatis.dynamic-sql</groupId>
+			<artifactId>mybatis-dynamic-sql</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
 
 	</dependencies>
 

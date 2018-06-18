@@ -28,8 +28,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.SpringBootect.son.model.Address;
 import com.SpringBootect.son.model.User;
@@ -55,30 +57,89 @@ public class test {
 	private List<User> lu;
 
 	@GetMapping(value = { "/", "/henho" })
-	public String index(Model model) throws ParseException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Set<String> roles = authentication.getAuthorities().stream().map(r -> r.getAuthority())
-				.collect(Collectors.toSet());
-		String[] rolo = roles.toArray(new String[roles.size()]);
+	public String index(Model model, @RequestParam(value = "column", defaultValue = "") String column,
+			@RequestParam(value = "sortt", defaultValue = "0") String sortt) throws ParseException {
+		// Authentication authentication =
+		// SecurityContextHolder.getContext().getAuthentication();
+		// Set<String> roles = authentication.getAuthorities().stream().map(r ->
+		// r.getAuthority())
+		// .collect(Collectors.toSet());
+		// String[] rolo = roles.toArray(new String[roles.size()]);
+		//
+		// String role = (rolo[0]);
+		// System.out.println(role + " da dang nhap");
+		//
+		String sql = "";
+		String lastTime=column;
+		switch (column) {
+		case "userName":
+			if (sortt.equals("0")) {
+				sql = "userName";
+				sortt="1";
+			} else {
+				sql = "userNameDesc";
+				sortt="0";
+			}
+			break;
+		case "email":
+			if (sortt.equals("0")) {
+				sql = "email";
+				sortt="1";
+			} else {
+				sql = "emailDesc";
+				sortt="0";
+			}
+			break;
 
-		String role = (rolo[0]);
-		System.out.println(role + " da dang nhap");
+		case "phone":
+			if (sortt.equals("0")) {
+				sql = "phone";
+				sortt="1";
+			} else {
+				sql = "phoneDesc";
+				sortt="0";
+			}
+			break;
+
+		case "dob":
+			if (sortt.equals("0")) {
+				sql = "dob";
+				sortt="1";
+			} else {
+				sql = "dobDesc";
+				sortt="0";
+			}
+			break;
+
+		case "amount":
+			if (sortt.equals("0")) {
+				sql = "amount";
+				sortt="1";
+			} else {
+				sql = "amountDesc";
+				sortt="0";
+			}
+			break;
+
+		default:
+			break;
+		}
+
+		List<User> getdata = userRepository.getdata(sql);
 		
-
-		List<User> getdata = userRepository.getdata();
-	
 		SimpleDateFormat from = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat to = new SimpleDateFormat("dd-MM-yyyy");
 		for (int i = 0; i < getdata.size(); i++) {
-			
-//			String format = formatter.format(getdata.get(i).getBod());
+
+			// String format = formatter.format(getdata.get(i).getBod());
 			String reformattedStr = to.format(from.parse(getdata.get(i).getBod()));
-		
-			getdata.get(i).setBod(reformattedStr); 
-		
+
+			getdata.get(i).setBod(reformattedStr);
+
 		}
-			
+		
 		model.addAttribute("userData", getdata);
+		model.addAttribute("sortt", sortt);
 		return "welcome";
 	}
 
@@ -100,10 +161,9 @@ public class test {
 	@RequestMapping("/register")
 	public String register(Model model) {
 		User u = new User();
-		List<User> lu= new ArrayList<User>();
+		List<User> lu = new ArrayList<User>();
 		lu = userRepository.selectAllUser();
-		
-		
+
 		model.addAttribute("User", u);
 		model.addAttribute("lUser", lu);
 		return "register";
@@ -112,8 +172,6 @@ public class test {
 	@RequestMapping(value = "/registerProccessing", method = RequestMethod.POST)
 	public String registerProccessing(@ModelAttribute(value = "User") @Valid User user, BindingResult bindingResult,
 			Model model) {
-		
-		
 
 		if (bindingResult.hasErrors()) {
 			System.out.println(bindingResult.toString());
@@ -123,8 +181,6 @@ public class test {
 		int insertUser = userRepository.insertUser(user);
 		System.out.println(insertUser);
 		if (insertUser == 1) {
-			
-			
 
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -142,7 +198,7 @@ public class test {
 
 			return "/login";
 		} else {
-			
+
 			return "/login";
 		}
 

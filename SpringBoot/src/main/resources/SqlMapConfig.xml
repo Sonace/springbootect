@@ -8,6 +8,7 @@
         <typeAlias alias="Role" type="com.SpringBootect.son.model.Role" />
         <typeAlias alias="Address" type="com.SpringBootect.son.model.Address" />
         <typeAlias alias="Account" type="com.SpringBootect.son.model.Account" />
+        <typeAlias alias="Order" type="com.SpringBootect.son.model.Order" />
     </typeAliases>
 
     <mappers>
