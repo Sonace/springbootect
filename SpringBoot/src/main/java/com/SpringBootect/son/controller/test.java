@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.SpringBootect.son.model.Address;
 import com.SpringBootect.son.model.User;
@@ -56,6 +57,19 @@ public class test {
 
 	private List<User> lu;
 
+	
+	
+	@PostMapping(value = { "/submit", "/henho/submit" })
+	@ResponseBody
+	public void submit(@RequestParam(value="IdDel") Integer[] idDel) {
+			for (Integer integer : idDel) {
+				System.out.println(integer);
+			}
+		
+	}
+	
+	
+	
 	@GetMapping(value = { "/", "/henho" })
 	public String index(Model model, @RequestParam(value = "column", defaultValue = "") String column,
 			@RequestParam(value = "sortt", defaultValue = "0") String sortt) throws ParseException {

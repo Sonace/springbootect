@@ -1,31 +1,89 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="include/banner :: banner">
+<head
+ th:include="include/banner :: banner"> 
 <meta charset="UTF-8" />
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Index Page</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+</head>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 		<script  th:inline="javascript">
 		
 		
-			function myFunction() {
-			alert("Trang đã được tải");
-			}
+		
+		$(document).ready(function() {
+			
+			 var del = [];
+			 
+			 $('#delrow').click(function() {
+					
+				 $("#accounttable input:checkbox").each(function(){
+		                if (this.checked) {
+		                	
+		                	 del.push($(this).val());
+		                	
+		                	$(this).closest('tr').remove();
+		                }
+		               
+
+		            })
+				    
+				});
+			 
+			 
+			 $('#submit').click(function() {
+				 var token = $('#_csrf').attr('content');
+				 var header = $('#_csrf_header').attr('content');
+				 
+				   $.ajax({
+				        
+				        type: "POST",
+				        data:  {IdDel : del},
+				        url: "/submit",
+				        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+				        success: function(data) {
+				            console.log('done');
+				        },
+				        error: function(jqXHR, textStatus, errorThrown) {
+				            console.log('error while post');
+				        }
+
+				    });
+				 
+				});
+			 
+			 
+			 
+			
+			 
+			 
+			 
+			
+			 
+			 
+		});
+		
 		
 		</script>
-</head>
-<body onload="myFunction()">
+<body>
 
 
 	<div>
 	<div>
 		 <a th:href="@{/henho(sortt='userNameDesc')}"><button>Add new</button></a>
-		 <a th:href="@{/edit}"><button>Edit</button></a>
-		 <a th:href="@{/delete}"><button>Delete</button></a>
+		 <a th:href="@{/edit}"><button >Edit</button></a>
+		 <button id="delrow">Delete</button>
 	</div>
 		
-		<table border="1">
+		<table border="1" id="accounttable">
 		
 			<tr>
 				<th>Checkbox</th>
@@ -49,7 +107,7 @@
 				</tr>
 			</th:block>
 		</table>
-			<input type="submit" value="submit"></input>
+			<input type="submit" id="submit" value="submit"></input>
 			 <input type="reset" value="reset"/>
 		</form>
 	
@@ -58,12 +116,10 @@
 	<div th:replace="include/footer :: footer"></div>
 	
 	
-	<script th:inline="javascript">
+	
 			
 
-			$(document).ready(function() {
-				 alert("window load occurred!");
-				});
+		
 </script>
 
 
