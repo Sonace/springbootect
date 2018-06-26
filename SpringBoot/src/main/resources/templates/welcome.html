@@ -4,8 +4,8 @@
 <head
  th:include="include/banner :: banner"> 
 <meta charset="UTF-8" />
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<!-- <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 <title>Index Page</title>
 
 </head>
@@ -15,8 +15,7 @@
 
 		<script  th:inline="javascript">
 		
-		
-		
+
 		$(document).ready(function() {
 			
 			 var del = [];
@@ -36,19 +35,20 @@
 				    
 				});
 			 
+			 $('#formData').submit(false);
 			 
 			 $('#submit').click(function() {
-				 var token = $('#_csrf').attr('content');
-				 var header = $('#_csrf_header').attr('content');
-				 
+				/*  var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(header, token);
+					}); */
+					
 				   $.ajax({
-				        
 				        type: "POST",
-				        data:  {IdDel : del},
+				        data:  { IdDel: del },
 				        url: "/submit",
-				        beforeSend: function(xhr) {
-                            xhr.setRequestHeader(header, token);
-                        },
+			            traditional: true,
 				        success: function(data) {
 				            console.log('done');
 				        },
@@ -61,14 +61,27 @@
 				});
 			 
 			 
-			 
+			 $("#addRow").click(function(){
+			    	
+					
+			        $("table").append("<tr><td><input type='checkbox'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td></tr>");
+			        });
+			        
 			
-			 
-			 
-			 
-			
-			 
-			 
+			 $("#editRow").click(function(){
+			    	
+				 $("#accounttable input:checkbox").each(function(){
+		                if (this.checked) {
+
+		                	var row =$(this).closest('tr');
+		                	var inputs = $('input', row);
+		                	inputs.prop('readonly', false);		                	
+		                }     
+
+		            })
+			       
+			        });
+ 
 		});
 		
 		
@@ -78,8 +91,8 @@
 
 	<div>
 	<div>
-		 <a th:href="@{/henho(sortt='userNameDesc')}"><button>Add new</button></a>
-		 <a th:href="@{/edit}"><button >Edit</button></a>
+		 <a id="addRow"><button>Add new</button></a>
+		 <a id="editRow"><button >Edit</button></a>
 		 <button id="delrow">Delete</button>
 	</div>
 		
@@ -94,9 +107,8 @@
 				<th><a th:href="@{/henho(column='amount',sortt=${sortt})}"><button>Amount</button></a></th>
 				<th>Số dư</th>
 			</tr>
-			<form action="#" method="post">
+			<form action="#" method="post" id="formData">
 			<th:block th:each="user : ${userData}">
-
 				<tr>
 					<td><input type="checkbox" th:value="${user.user_id}" readonly="readonly"  /></td>
 					<td><input type="text" th:value="${user.user_name}" readonly="readonly"/></td>
@@ -107,7 +119,7 @@
 				</tr>
 			</th:block>
 		</table>
-			<input type="submit" id="submit" value="submit"></input>
+			<button id="submit">submit</button>
 			 <input type="reset" value="reset"/>
 		</form>
 	

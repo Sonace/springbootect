@@ -113,6 +113,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 
+	@Override
+	public int deleteUserById(int userId) {
+		SqlSession session = sqlSessionFactory.openSession();
+		session.delete("deleteAccountById", userId);
+		session.delete("deleteAddressById", userId);
+		
+		return session.delete("deleteUserById", userId);
+	}
+
+
 	
 
 }

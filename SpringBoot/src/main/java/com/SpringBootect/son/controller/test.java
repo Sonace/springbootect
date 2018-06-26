@@ -63,8 +63,11 @@ public class test {
 	@ResponseBody
 	public void submit(@RequestParam(value="IdDel") Integer[] idDel) {
 			for (Integer integer : idDel) {
-				System.out.println(integer);
+			
+				userRepository.deleteUserById(integer);
 			}
+			
+			
 		
 	}
 	

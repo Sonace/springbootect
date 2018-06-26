@@ -8,6 +8,18 @@
 		SELECT * FROM _user;
 	</select>
 
+	<delete id="deleteUserById" parameterType="int">
+        DELETE from _user WHERE user_id = #{id};
+    </delete>
+    
+    <delete id="deleteAccountById" parameterType="int">
+        DELETE from account WHERE user_id = #{id};
+    </delete>
+    
+    <delete id="deleteAddressById" parameterType="int">
+        DELETE from address WHERE user_id = #{id};
+    </delete>
+
 	<select id="findUserAccount" parameterType="String"
 		resultMap="result">
 		SELECT user_id,user_name,pass_word FROM _user WHERE
