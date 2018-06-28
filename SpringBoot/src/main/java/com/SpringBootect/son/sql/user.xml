@@ -41,6 +41,23 @@
 		)}
 
 	</select>
+	
+	
+	<select id="insertTable" parameterType="User">
+		<!-- INSERT INTO _user (user_name, pass_word, bod) sortS (#{user_name}, 
+			#{pass_word}, #{bod}); -->
+
+		{call insertTable(
+		#{user_name, mode=IN, jdbcType=VARCHAR},
+		#{pass_word, mode=IN, jdbcType=CHAR},
+		#{bod, mode=IN, jdbcType=DATE},
+		#{address.phone_number, mode=IN, jdbcType=INTEGER},
+		#{address.email,
+		mode=IN, jdbcType=CHAR},
+		#{account.amount, mode=IN, jdbcType=FLOAT}
+		)}
+
+	</select>
 
 
 	<select id="getdata" parameterType="Order" resultMap="result">

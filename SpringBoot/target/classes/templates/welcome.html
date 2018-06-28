@@ -19,19 +19,23 @@
 		$(document).ready(function() {
 			
 			 var del = [];
+			 del.push(0);
 			 
 			 $('#delrow').click(function() {
 					
 				 $("#accounttable input:checkbox").each(function(){
 		                if (this.checked) {
-		                	
-		                	 del.push($(this).val());
+		                	if($(this).val()!='add'){
+		                		del.push($(this).val());
+		                		
+		                	}
+		                	 
 		                	
 		                	$(this).closest('tr').remove();
 		                }
 		               
 
-		            })
+		            });
 				    
 				});
 			 
@@ -43,10 +47,37 @@
 					$(document).ajaxSend(function(e, xhr, options) {
 						xhr.setRequestHeader(header, token);
 					}); */
+					var data=[];
+					
+					 $("#accounttable input:checkbox").each(function(){
+						 
+						 var object=[];
+						   
+						 
+			                  if ($(this).val()=='add') {
+			                	 
+			                	  var $row = $(this).closest("tr"),      
+			                	    $tds = $row.find("td");             
+			                	    
+			                	$.each($tds, function() {
+			                
+			                		 object.push($(this).find("input").val());
+			                	});
+			                	  
+			                	
+			                	data.push(object)
+			                	
+			                } 
+			                  
+
+			            });
+					
+					
+					
 					
 				   $.ajax({
 				        type: "POST",
-				        data:  { IdDel: del },
+				        data:  { IdDel: del, Add: data },
 				        url: "/submit",
 			            traditional: true,
 				        success: function(data) {
@@ -64,7 +95,7 @@
 			 $("#addRow").click(function(){
 			    	
 					
-			        $("table").append("<tr><td><input type='checkbox'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td></tr>");
+			        $("table").append("<tr><td><input type='checkbox' value='add'/></td><td><input type='text' id='username'/></td><td><input type='text' id='email'/></td><td><input type='text' id='phone'/></td><td><input type='text' id='bod'/></td><td><input type='text' id='amount'/></td></tr>");
 			        });
 			        
 			

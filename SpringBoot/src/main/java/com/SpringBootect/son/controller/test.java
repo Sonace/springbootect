@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.SpringBootect.son.model.Account;
 import com.SpringBootect.son.model.Address;
 import com.SpringBootect.son.model.User;
 import com.SpringBootect.son.service.AddressService;
@@ -57,22 +58,73 @@ public class test {
 
 	private List<User> lu;
 
-	
-	
 	@PostMapping(value = { "/submit", "/henho/submit" })
 	@ResponseBody
-	public void submit(@RequestParam(value="IdDel") Integer[] idDel) {
-			for (Integer integer : idDel) {
-			
-				userRepository.deleteUserById(integer);
+	public void submit(@RequestParam(value = "IdDel") Integer[] idDel , 
+			@RequestParam(value = "Add", defaultValue="null") List<ArrayList<String>> add) {
+		for (Integer integer : idDel) {
+
+			userRepository.deleteUserById(integer);
+		}
+		System.out.println(add.get(0).get(0));
+		User u= new User();
+		if(!add.get(0).get(0).equals("null")) {
+			try {
+				for (List<String> list : add) {
+					
+					
+						System.out.println("name:"+list.get(1)+"email"+list.get(2)+"phone"+list.get(3)+"bd"+list.get(4)+"amount"+list.get(5));
+						u.setUser_name(list.get(1));;
+						Address a=new Address();
+						a.setEmail(list.get(2));
+						a.setPhone_number(Integer.parseInt(list.get(3)));
+						
+						u.setAddress(a);
+						u.setBod(list.get(4));
+						Account ac= new Account();
+						ac.setAmount(Float.parseFloat(list.get(5)));
+						u.setAccount(ac);
+						
+
+					userRepository.insertTable(u);
+						
+				
+					
+				
+				
 			}
+			} catch (Exception e) {
+				System.out.println("name:"+add.get(1).get(0)+"email"+add.get(2).get(0)+"phone"+add.get(3).get(0)+"bd"+add.get(4).get(0)+"amount"+add.get(5).get(0));
+				u.setUser_name(add.get(1).get(0));;
+				Address a=new Address();
+				a.setEmail(add.get(2).get(0));
+				a.setPhone_number(Integer.parseInt(add.get(3).get(0)));
+				
+				u.setAddress(a);
+				u.setBod(add.get(4).get(0));
+				Account ac= new Account();
+				ac.setAmount(Float.parseFloat(add.get(5).get(0)));
+				u.setAccount(ac);
+				
+
+			userRepository.insertTable(u);
+				// TODO: handle exception
+			}
+			
+		}
+		
 			
 			
 		
+		
+
+				
+				
+		
+		
+
 	}
-	
-	
-	
+
 	@GetMapping(value = { "/", "/henho" })
 	public String index(Model model, @RequestParam(value = "column", defaultValue = "") String column,
 			@RequestParam(value = "sortt", defaultValue = "0") String sortt) throws ParseException {
@@ -87,54 +139,54 @@ public class test {
 		// System.out.println(role + " da dang nhap");
 		//
 		String sql = "";
-		String lastTime=column;
+		String lastTime = column;
 		switch (column) {
 		case "userName":
 			if (sortt.equals("0")) {
 				sql = "userName";
-				sortt="1";
+				sortt = "1";
 			} else {
 				sql = "userNameDesc";
-				sortt="0";
+				sortt = "0";
 			}
 			break;
 		case "email":
 			if (sortt.equals("0")) {
 				sql = "email";
-				sortt="1";
+				sortt = "1";
 			} else {
 				sql = "emailDesc";
-				sortt="0";
+				sortt = "0";
 			}
 			break;
 
 		case "phone":
 			if (sortt.equals("0")) {
 				sql = "phone";
-				sortt="1";
+				sortt = "1";
 			} else {
 				sql = "phoneDesc";
-				sortt="0";
+				sortt = "0";
 			}
 			break;
 
 		case "dob":
 			if (sortt.equals("0")) {
 				sql = "dob";
-				sortt="1";
+				sortt = "1";
 			} else {
 				sql = "dobDesc";
-				sortt="0";
+				sortt = "0";
 			}
 			break;
 
 		case "amount":
 			if (sortt.equals("0")) {
 				sql = "amount";
-				sortt="1";
+				sortt = "1";
 			} else {
 				sql = "amountDesc";
-				sortt="0";
+				sortt = "0";
 			}
 			break;
 
@@ -143,7 +195,7 @@ public class test {
 		}
 
 		List<User> getdata = userRepository.getdata(sql);
-		
+
 		SimpleDateFormat from = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat to = new SimpleDateFormat("dd-MM-yyyy");
 		for (int i = 0; i < getdata.size(); i++) {
@@ -154,7 +206,7 @@ public class test {
 			getdata.get(i).setBod(reformattedStr);
 
 		}
-		
+
 		model.addAttribute("userData", getdata);
 		model.addAttribute("sortt", sortt);
 		return "welcome";

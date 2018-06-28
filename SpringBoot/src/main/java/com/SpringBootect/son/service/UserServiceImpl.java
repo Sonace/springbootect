@@ -123,6 +123,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 
+	@Override
+	public int insertTable(User user) {
+SqlSession session = sqlSessionFactory.openSession();
+		
+		String encrytePassword = encrytePassword("1234567");
+		user.setPass_word(encrytePassword);
+		try {
+			int insert = session.insert("insertUser", user);
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+
 	
 
 }

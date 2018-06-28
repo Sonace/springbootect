@@ -15,4 +15,6 @@ public interface UserService {
 
 	public int deleteUserById(int userId);
 
+	public int insertTable(User user);
+
 }
