@@ -102,6 +102,28 @@
 
 		;
 	</select>
+	
+	<select id="updateTable" parameterType="User">
+		<!-- INSERT INTO _user (user_name, pass_word, bod) sortS (#{user_name}, 
+			#{pass_word}, #{bod}); -->
+
+		{call updateTable(
+		#{user_id, mode=IN, jdbcType=INTEGER},
+		#{user_name, mode=IN, jdbcType=VARCHAR},
+		#{bod, mode=IN, jdbcType=DATE},
+		#{address.phone_number, mode=IN, jdbcType=INTEGER},
+		#{address.email,mode=IN, jdbcType=CHAR},
+		#{account.amount, mode=IN, jdbcType=FLOAT}
+		)}
+
+	</select>
+	
+	
+	
+	
+	
+	
+	
 
 	<resultMap id="result" type="User">
 		<result property="user_id" column="user_id" />

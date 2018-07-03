@@ -141,6 +141,20 @@ SqlSession session = sqlSessionFactory.openSession();
 	}
 
 
+	@Override
+	public int updateTable(User user) {
+SqlSession session = sqlSessionFactory.openSession();	
+		try {
+			int insert = session.insert("updateTable", user);
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+
 	
 
 }

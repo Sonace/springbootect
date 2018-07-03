@@ -1,14 +1,10 @@
 package com.SpringBootect.son.controller;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -16,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.ibatis.javassist.bytecode.analysis.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -60,69 +55,120 @@ public class test {
 
 	@PostMapping(value = { "/submit", "/henho/submit" })
 	@ResponseBody
-	public void submit(@RequestParam(value = "IdDel") Integer[] idDel , 
-			@RequestParam(value = "Add", defaultValue="null") List<ArrayList<String>> add) {
+	public synchronized void submit(@RequestParam(value = "IdDel") Integer[] idDel,
+			@RequestParam(value = "Add", defaultValue = "null") List<ArrayList<String>> add,
+			@RequestParam(value = "edit", defaultValue = "null") List<ArrayList<String>> edit) {
 		for (Integer integer : idDel) {
-
 			userRepository.deleteUserById(integer);
 		}
-		System.out.println(add.get(0).get(0));
-		User u= new User();
-		if(!add.get(0).get(0).equals("null")) {
+
+		User u;
+		;
+		if (!add.get(0).get(0).equals("null")) {
+			u = new User();
 			try {
 				for (List<String> list : add) {
+
 					
-					
-						System.out.println("name:"+list.get(1)+"email"+list.get(2)+"phone"+list.get(3)+"bd"+list.get(4)+"amount"+list.get(5));
-						u.setUser_name(list.get(1));;
-						Address a=new Address();
-						a.setEmail(list.get(2));
-						a.setPhone_number(Integer.parseInt(list.get(3)));
-						
-						u.setAddress(a);
-						u.setBod(list.get(4));
-						Account ac= new Account();
-						ac.setAmount(Float.parseFloat(list.get(5)));
-						u.setAccount(ac);
-						
+					u.setUser_name(list.get(1));
+					;
+					Address a = new Address();
+					a.setEmail(list.get(2));
+					a.setPhone_number(Integer.parseInt(list.get(3)));
+					u.setAddress(a);
+					u.setBod(convertDate(list.get(4)));
+					Account ac = new Account();
+					ac.setAmount(Float.parseFloat(list.get(5)));
+					u.setAccount(ac);
 
 					userRepository.insertTable(u);
-						
-				
-					
-				
-				
-			}
+
+				}
 			} catch (Exception e) {
-				System.out.println("name:"+add.get(1).get(0)+"email"+add.get(2).get(0)+"phone"+add.get(3).get(0)+"bd"+add.get(4).get(0)+"amount"+add.get(5).get(0));
-				u.setUser_name(add.get(1).get(0));;
-				Address a=new Address();
+				
+				u.setUser_name(add.get(1).get(0));
+				
+				Address a = new Address();
 				a.setEmail(add.get(2).get(0));
 				a.setPhone_number(Integer.parseInt(add.get(3).get(0)));
-				
+
 				u.setAddress(a);
-				u.setBod(add.get(4).get(0));
-				Account ac= new Account();
+				u.setBod(convertDate(add.get(4).get(0)));
+				Account ac = new Account();
 				ac.setAmount(Float.parseFloat(add.get(5).get(0)));
 				u.setAccount(ac);
-				
 
-			userRepository.insertTable(u);
+				userRepository.insertTable(u);
 				// TODO: handle exception
 			}
-			
+
+		}
+
+		if (!edit.get(0).get(0).equals("null")) {
+			u = new User();
+			try {
+				for (List<String> list : edit) {
+
+					u.setUser_id(Integer.parseInt(list.get(0)));
+					
+					u.setUser_name(list.get(1));
+					
+					Address a = new Address();
+					a.setEmail(list.get(2));
+					a.setPhone_number(Integer.parseInt(list.get(3)));
+					u.setAddress(a);
+					u.setBod(convertDate(list.get(4)));
+					Account ac = new Account();
+					ac.setAmount(Float.parseFloat(list.get(5)));
+					u.setAccount(ac);
+
+					userRepository.updateTable(u);
+
+				}
+			} catch (Exception e) {
+				u.setUser_id(Integer.parseInt(edit.get(0).get(0)));
+				
+				u.setUser_name(edit.get(1).get(0));
+				Address a = new Address();
+				a.setEmail(edit.get(2).get(0));
+				a.setPhone_number(Integer.parseInt(edit.get(3).get(0)));
+
+				u.setAddress(a);
+				u.setBod(convertDate(edit.get(4).get(0)));
+				Account ac = new Account();
+				ac.setAmount(Float.parseFloat(edit.get(5).get(0)));
+				u.setAccount(ac);
+
+				userRepository.updateTable(u);
+				// TODO: handle exception
+			}
+
+		}
+
+	}
+	
+	public String convertDate(String date) {
+		final String OLD_FORMAT = "dd-MM-yyyy";
+		final String NEW_FORMAT = "yyyy-MM-dd";
+
+
+		
+		String newDateString;
+
+		SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+		Date d;
+		try {
+			d = sdf.parse(date);
+			sdf.applyPattern(NEW_FORMAT);
+			return newDateString = sdf.format(d);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
 		}
 		
-			
-			
 		
 		
-
-				
-				
-		
-		
-
 	}
 
 	@GetMapping(value = { "/", "/henho" })
@@ -228,7 +274,7 @@ public class test {
 	}
 
 	@RequestMapping("/register")
-	public String register(Model model) {
+	public synchronized String register(Model model) {
 		User u = new User();
 		List<User> lu = new ArrayList<User>();
 		lu = userRepository.selectAllUser();

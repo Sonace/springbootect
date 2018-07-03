@@ -16,6 +16,8 @@ public interface UserMapper {
 
 	public int insertTable(User user);
 
+	public int updateTable(User user);
+
 	public List<User> getdata(Order order);
 
 	public int deleteUserById(int userId);

@@ -11,6 +11,8 @@ public interface UserService {
 
 	public int insertUser(User user);
 
+	public int updateTable(User user);
+
 	public List<User> getdata(String sort);
 
 	public int deleteUserById(int userId);
